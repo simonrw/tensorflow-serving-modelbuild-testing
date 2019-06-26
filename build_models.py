@@ -3,10 +3,22 @@
 import shutil
 import os
 import tensorflow as tf
+import argparse
+
+
+parser = argparse.ArgumentParser()
+parser.add_argument(
+    "-f",
+    "--force",
+    action="store_true",
+    default=False,
+    help="Force overriding of the cached models, if they exist already",
+)
+args = parser.parse_args()
 
 
 def build_model(arch, filename):
-    if os.path.isfile(filename):
+    if os.path.isfile(filename) and not args.force:
         return
 
     model = arch(weights="imagenet")
@@ -15,7 +27,7 @@ def build_model(arch, filename):
 
 
 def create_saved_model(h5file, export_path):
-    if os.path.isfile(os.path.join(export_path, "saved_model.pb")):
+    if os.path.isfile(os.path.join(export_path, "saved_model.pb")) and not args.force:
         return
 
     string_input = tf.compat.v1.placeholder(tf.string, shape=(None,))
