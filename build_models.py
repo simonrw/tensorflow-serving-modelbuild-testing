@@ -18,12 +18,8 @@ def create_saved_model(h5file, export_path):
     if os.path.isfile(os.path.join(export_path, "saved_model.pb")):
         return
 
-    string_input = tf.compat.v1.placeholder(tf.string, shape=(None, ))
-    imgs_map = tf.map_fn(
-            tf.image.decode_image,
-            string_input,
-            dtype=tf.uint8
-            )
+    string_input = tf.compat.v1.placeholder(tf.string, shape=(None,))
+    imgs_map = tf.map_fn(tf.image.decode_image, string_input, dtype=tf.uint8)
 
     imgs_map.set_shape((None, None, None, 3))
     imgs = tf.image.resize_images(imgs_map, [224, 224])
@@ -39,11 +35,11 @@ def create_saved_model(h5file, export_path):
 
     shutil.rmtree(export_path, ignore_errors=True)
     tf.saved_model.simple_save(
-            tf.keras.backend.get_session(),
-            export_path,
-            inputs={"image_bytes": string_input},
-            outputs={"predictions": output}
-            )
+        tf.keras.backend.get_session(),
+        export_path,
+        inputs={"image_bytes": string_input},
+        outputs={"predictions": output},
+    )
 
 
 vgg16_h5file = "model_vgg16.h5"
