@@ -1,6 +1,12 @@
 # Tensorflow serving testing
 
-Testing with multiple models with the GPU
+Testing with multiple models with the GPU.
+
+*Note: versions are very important; the tensorflow serving version must
+match at least the patch level of the tensorflow package used to build
+the models. The requirements.txt file specifies `tensorflow==1.13.1`,
+and the image chosen is 1.13.0. These have been tested to work
+together.*
 
 ## Files
 
