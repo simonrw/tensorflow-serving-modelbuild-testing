@@ -8,6 +8,11 @@ the models. The requirements.txt file specifies `tensorflow==1.13.1`,
 and the image chosen is 1.13.0. These have been tested to work
 together.*
 
+## Getting started
+
+To get set up with a virtual environment and all of the required
+packages, run `bin/setup`.
+
 ## Files
 
 **`build_models.py`**

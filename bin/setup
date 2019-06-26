@@ -1,0 +1,20 @@
+#!/bin/sh
+
+set -e
+
+log() {
+    echo $* >&2
+}
+
+log "Creating virtual environment under ${PWD}/venv"
+
+test -d venv || {
+    python3 -m venv venv
+}
+
+log "Installing python packages"
+./venv/bin/pip install -r requirements.txt
+
+
+log "Fetching the docker image"
+docker pull tensorflow/serving:1.13.0-gpu
