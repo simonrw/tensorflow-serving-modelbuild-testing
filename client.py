@@ -12,7 +12,9 @@ import tensorflow as tf
 
 parser = argparse.ArgumentParser()
 parser.add_argument("filename", type=argparse.FileType("rb"))
-parser.add_argument("-m", "--model-name", required=True, choices={"vgg16", "resnet50"})
+parser.add_argument("-m", "--model-name", required=True, choices={
+    "vgg16", "resnet50", "inception_v3", "xception", "mobilenet", "mobilenet_v2",
+    })
 args = parser.parse_args()
 
 # URL = "https://httpbin.org/post"

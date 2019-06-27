@@ -46,7 +46,7 @@ def create_saved_model(h5file, export_path):
     output = model(img_float)
 
     shutil.rmtree(export_path, ignore_errors=True)
-    tf.saved_model.simple_save(
+    tf.compat.v1.saved_model.simple_save(
         tf.keras.backend.get_session(),
         export_path,
         inputs={"image_bytes": string_input},
@@ -58,6 +58,9 @@ architectures = [
         ("vgg16", tf.keras.applications.vgg16.VGG16),
         ("resnet50", tf.keras.applications.resnet50.ResNet50),
         ("inception_v3", tf.keras.applications.inception_v3.InceptionV3),
+        ("xception", tf.keras.applications.xception.Xception),
+        ("mobilenet", tf.keras.applications.mobilenet.MobileNet),
+        ("mobilenet_v2", tf.keras.applications.mobilenet_v2.MobileNetV2),
         ]
 
 config_lines = []
