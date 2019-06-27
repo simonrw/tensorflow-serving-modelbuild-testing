@@ -54,11 +54,29 @@ def create_saved_model(h5file, export_path):
     )
 
 
-vgg16_h5file = "model_vgg16.h5"
-resnet_h5file = "model_resnet50.h5"
+architectures = [
+        ("vgg16", tf.keras.applications.vgg16.VGG16),
+        ("resnet50", tf.keras.applications.resnet50.ResNet50),
+        ("inception_v3", tf.keras.applications.inception_v3.InceptionV3),
+        ]
 
-build_model(tf.keras.applications.vgg16.VGG16, vgg16_h5file)
-build_model(tf.keras.applications.resnet50.ResNet50, resnet_h5file)
+config_lines = []
+for name, cls in architectures:
+    h5file = f"model_{name}.h5"
+    build_model(cls, h5file)
+    create_saved_model(h5file, f"models/{name}/1")
 
-create_saved_model(vgg16_h5file, "models/vgg16/1")
-create_saved_model(resnet_h5file, "models/resnet50/1")
+    config_lines.append("""
+    config: {{
+        name: '{name}'
+        base_path: '/models/{name}'
+        model_platform: 'tensorflow'
+    }}""".format(name=name))
+
+config = """model_config_list: {{
+    {configs}
+
+}}""".format(configs="\n".join(config_lines))
+
+with open("ModelConfig.pbtext", "w") as outfile:
+    outfile.write(config)
